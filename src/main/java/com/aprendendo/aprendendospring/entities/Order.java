@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
@@ -25,17 +26,19 @@ public class Order implements Serializable { //muito importante implementar o se
 	@Id				//identifica que esse atributo é um ID da tabela e define logo a baixo a estrategia de geração dele (Neste caso seria o AUTOINCREMENT)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant moment;
 	
-	@JsonIgnore
+	
 	@ManyToOne		//define a relação das nossa entidades (no caso esta tendo uma relação muitos para um com a nossa entidade User)
 	@JoinColumn(name="client_id")	//define o nome dessa chave estrangeira
 	private User clients;
 	
+	
 	public Order() {
 	
 	}
-
+	
 	public long getId() {
 		return id;
 	}
@@ -44,6 +47,7 @@ public class Order implements Serializable { //muito importante implementar o se
 		this.id = id;
 	}
 
+	
 	public Instant getMoment() {
 		return moment;
 	}
@@ -51,7 +55,8 @@ public class Order implements Serializable { //muito importante implementar o se
 	public void setMoment(Instant moment) {
 		this.moment = moment;
 	}
-
+	
+	@JsonIgnore			//jsonignore no getUsuario para que nao ocorra um loop
 	public User getUsers() {
 		return clients;
 	}
