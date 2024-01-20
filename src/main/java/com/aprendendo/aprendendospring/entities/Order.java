@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
+import com.aprendendo.aprendendospring.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -28,6 +29,7 @@ public class Order implements Serializable { //muito importante implementar o se
 	private long id;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant moment;
+	private Integer orderStatus;
 	
 	
 	@ManyToOne		//define a relação das nossa entidades (no caso esta tendo uma relação muitos para um com a nossa entidade User)
@@ -64,11 +66,24 @@ public class Order implements Serializable { //muito importante implementar o se
 	public void setClients(User clients) {
 		this.clients = clients;
 	}
+	
+	
+	public OrderStatus getOrderstatus() {
+		return OrderStatus.valueOf(orderStatus); //retorna 
+	}
+
+	public void setOrderstatus(OrderStatus orderStatus) {
+		if(orderStatus != null) { //verifica se é nulo
+		this.orderStatus = orderStatus.getCode(); //atribui
+		}
+	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
 	}
+	
+	
 
 	@Override
 	public boolean equals(Object obj) {
@@ -89,10 +104,12 @@ public class Order implements Serializable { //muito importante implementar o se
 		this.clients = clients;
 	}
 	
-	public Order(Instant moment, User clients) {
+	public Order(Instant moment, OrderStatus orderstatus, User clients) {
 		
 		this.moment = moment;
 		this.clients = clients;
+		setOrderstatus(orderstatus);
+		
 	}
 	
 	
