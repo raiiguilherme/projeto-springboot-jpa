@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aprendendo.aprendendospring.entities.User;
 import com.aprendendo.aprendendospring.services.UserService;
 
-@RestController
+@RestController	//indica que é um controller da API (deve estar em todas as classes que resources)
 @RequestMapping(value="/users") //indica o caminho da requisição
 public class UserResource {
 	@Autowired
@@ -25,10 +25,10 @@ public class UserResource {
 	
 	}
 	
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<User> findById(@PathVariable long id){
-		User obj = service.findById(id);
-		return ResponseEntity.ok(obj);
+	@GetMapping(value = "/{id}") //altera o URL para que seja filtrado por ID
+	public ResponseEntity<User> findById(@PathVariable long id){ //anotação que passa o id informado no URL para o parametro "long id"
+		User obj = service.findById(id);	//cria um objeto do tipo user recebendo o metodo da classe UserService
+		return ResponseEntity.ok(obj);		//retorna esse objeto no corpo da nossa requisição
 	}
 	
 	

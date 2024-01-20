@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,11 +20,14 @@ public class Order implements Serializable { //muito importante implementar o se
 
 	
 	private static final long serialVersionUID = 1L;
+	
+	
 	@Id				//identifica que esse atributo é um ID da tabela e define logo a baixo a estrategia de geração dele (Neste caso seria o AUTOINCREMENT)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private Instant moment;
 	
+	@JsonIgnore
 	@ManyToOne		//define a relação das nossa entidades (no caso esta tendo uma relação muitos para um com a nossa entidade User)
 	@JoinColumn(name="client_id")	//define o nome dessa chave estrangeira
 	private User clients;
@@ -73,8 +78,14 @@ public class Order implements Serializable { //muito importante implementar o se
 	}
 
 	public Order(long id, Instant moment, User clients) {
-		super();
+		
 		this.id = id;
+		this.moment = moment;
+		this.clients = clients;
+	}
+	
+	public Order(Instant moment, User clients) {
+		
 		this.moment = moment;
 		this.clients = clients;
 	}

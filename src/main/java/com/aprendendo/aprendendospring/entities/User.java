@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,8 +20,7 @@ public class User implements Serializable {//muito importante implementar o Seri
 	
 	private static final long serialVersionUID = 1L;
 	
-	@OneToMany(mappedBy = "clients")	//define a relação "UM PARA MUITOS" na nossa relação com a entidade Order, 
-	private List<Order> orders = new ArrayList<>();	 //e direciona que na nossa entidade Order, o atributo que é a chave estrangeira é o "clients"
+	
 	
 	
 	
@@ -31,6 +32,16 @@ public class User implements Serializable {//muito importante implementar o Seri
 	private String email;
 	private String phone;
 	private String password;
+	
+	
+	@OneToMany(mappedBy = "clients")	//define a relação "UM PARA MUITOS" na nossa relação com a entidade Order, 
+	private List<Order> orders = new ArrayList<>();												//previne que a dependencia de um loop							
+			//e direciona que na nossa entidade Order, o atributo que é a chave estrangeira é o "clients"
+		
+	
+	
+	
+	
 	
 	@Override
 	public int hashCode() {
@@ -96,9 +107,13 @@ public class User implements Serializable {//muito importante implementar o Seri
 	public User() {
 		
 	}
+	
 	public List<Order> getOrders() {
 		return orders;
 	}
+	
+	
+	
 	
 	
 	
