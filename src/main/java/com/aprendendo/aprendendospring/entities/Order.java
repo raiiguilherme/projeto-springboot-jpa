@@ -10,6 +10,7 @@ import com.aprendendo.aprendendospring.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,7 +18,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+
 
 @Entity		//identifica essa classe como sendo uma tabela do nosso banco de dados
 @Table (name="tb_order")	//adiciona o nome dessa tabela
@@ -43,6 +46,9 @@ public class Order implements Serializable { //muito importante implementar o se
 
 	@OneToMany(mappedBy = "id.order") //id.order porque a classe ordem item é quem tem o id que se relaciona com o OrderItemPK
 	private Set<OrderItem> items = new HashSet<>();
+
+	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)//relação um para um nós mapeamos as entidades para terem o mesmo id
+	private Payment payment;
 	
 	
 	public Order() {
@@ -78,8 +84,27 @@ public class Order implements Serializable { //muito importante implementar o se
 	public void setClients(User clients) {
 		this.clients = clients;
 	}
-	
-	
+
+	public Payment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
+	}
+
+	public Double getTotal(){
+		double sum =0;
+		for(OrderItem x : items){
+			sum += x.getSubTotal();
+		}
+		return sum;
+	}
+
+
+
+
+
 	public OrderStatus getOrderstatus() {
 		return OrderStatus.valueOf(orderStatus); //retorna 
 	}

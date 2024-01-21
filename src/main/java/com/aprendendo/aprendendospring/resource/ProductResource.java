@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aprendendo.aprendendospring.entities.Product;
 import com.aprendendo.aprendendospring.services.ProductService;
 
+
+
 @RestController
 @RequestMapping(value="/products")
 public class ProductResource {
@@ -32,6 +34,7 @@ public class ProductResource {
 		return ResponseEntity.ok(o);
 		
 	}
+
 
 	
 	

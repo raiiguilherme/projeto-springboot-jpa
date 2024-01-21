@@ -75,6 +75,10 @@ public class OrderItem implements Serializable {
         this.price = price;
     }
 
+    public Double getSubTotal(){//o que vale é o get, então mesmo sendo um metodo criado manualmente, deve ser colocado o get no inicio
+        return price*quantity;
+    }
+
 
     
 

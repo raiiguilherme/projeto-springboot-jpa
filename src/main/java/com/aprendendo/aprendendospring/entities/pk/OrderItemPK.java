@@ -22,9 +22,13 @@ public class OrderItemPK implements Serializable {
     @JoinColumn (name = "id_order") //campo da tabela
     private Order order;
 
+    
+
     @ManyToOne //tipo de relacionamento 
     @JoinColumn(name="id_product") //campo da tabela
     private Product product;
+
+
 
 
 }
