@@ -15,15 +15,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode
-@Embeddable
+@Embeddable //relacionamento composto
 public class OrderItemPK implements Serializable {
 
-    @ManyToOne
-    @JoinColumn (name = "id_order")
+    @ManyToOne //tipo de relacionamento 
+    @JoinColumn (name = "id_order") //campo da tabela
     private Order order;
-    
-    @ManyToOne
-    @JoinColumn(name="id_product")
+
+    @ManyToOne //tipo de relacionamento 
+    @JoinColumn(name="id_product") //campo da tabela
     private Product product;
 
 

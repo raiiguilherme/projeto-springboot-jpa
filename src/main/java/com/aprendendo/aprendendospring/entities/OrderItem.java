@@ -3,6 +3,7 @@ package com.aprendendo.aprendendospring.entities;
 import java.io.Serializable;
 
 import com.aprendendo.aprendendospring.entities.pk.OrderItemPK;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -13,11 +14,12 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table (name = "tb_order_item")
 @NoArgsConstructor
-@EqualsAndHashCode (of = "id")
+@EqualsAndHashCode(of = "id")
+
 public class OrderItem implements Serializable {
     
     @EmbeddedId //id composto 
-    private OrderItemPK id;
+    private OrderItemPK id = new OrderItemPK(); //sempre instanciar para ela não começar nula;
     private Integer quantity;
     private Double price;
 
@@ -33,7 +35,15 @@ public class OrderItem implements Serializable {
         this.price = price;
     }
 
+    public OrderItem(Order order, Product product, Integer quantity, Double price) {
+        id.setOrder(order);
+        id.setProduct(product);
+        this.quantity = quantity;
+        this.price = price;
+    }
+
     //getters e setter criados manualmente 
+    @JsonIgnore
     public Order getOrder(){
         return id.getOrder(); //busca da classe OrderItemPK
     }
