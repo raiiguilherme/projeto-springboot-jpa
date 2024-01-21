@@ -14,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -32,7 +33,7 @@ public class Product implements Serializable{
 	private Double price;
 	private String imhUrl;
 	
-	@JsonIgnore //previne um loop
+	//previne um loop
 	@ManyToMany
 	@JoinTable(name="tb_product_category", joinColumns = @JoinColumn(name = "id_product"), inverseJoinColumns = @JoinColumn(name = "id_category"))
 	private Set<Category> categories = new HashSet<>(); //associação (MUITO IMPORTANTE USAR O SET E HASHSET PARA QUE NAO EXISTA DUAS CATEGORIAS PRO MESMO PRODUTO)
@@ -41,7 +42,8 @@ public class Product implements Serializable{
 	//@JoinColumn (Anotação responsavel por criar esse campo na nossa tabela la no banco de dados
 	//inverseJoinColumns (faz o mesmo que o joinColumns, mas agora para o nosso outro lado da associação (Classe Category)
 	
-	
+	@OneToMany(mappedBy = "id.product")
+	private Set<OrderItem> items = new HashSet<>();
 	
 	public long getId() {
 		return id;
@@ -73,8 +75,21 @@ public class Product implements Serializable{
 	public void setImhUrl(String imhUrl) {
 		this.imhUrl = imhUrl;
 	}
-	public Set<Category> getCategories() {
+
+	//getters dos relacionamentos
+	public Set<Category> getCategories() { 
 		return categories;
+	}
+
+	@JsonIgnore
+	public Set<Order> getOrders(){
+		Set<Order> set = new HashSet<>();
+
+		for(OrderItem x :items){ //percorrendo a coleção e adicionando ao set criado, a order do item
+			x.getOrder();
+			set.add(x.getOrder());
+		}
+		return set;
 	}
 	
 	
