@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,10 +46,23 @@ public class UserResource {
 		return ResponseEntity.created(uri).body(user);
 	}
 
-	@DeleteMapping(value = "/{id}")
+	@DeleteMapping(value = "/{id}") //caminho utilizado para deleção 
 	public ResponseEntity<Void> delete(@PathVariable long id){
-		service.delete(id);
-		return ResponseEntity.noContent().build();
+		service.delete(id); //chamada do metodo de deleção vindo da classe de service
+		return ResponseEntity.noContent().build(); //retorna o codigo 204 no content
+
+	//muito importante lembrar que não é possivel deletar um usuario que esteja associado com outras tabelas
+	}
+
+
+	@PutMapping(value = "/{id}") //metodo put e caminho para deleção
+	public ResponseEntity<User> update(@PathVariable long id, @RequestBody User user){
+
+		user = service.update(id, user); //pego a variavel vinda do parametro e chamo o metodo de atualização
+		return ResponseEntity.ok(user); //retornando o novo usuario ja atualizado
+
+
+
 	}
 	
 	
