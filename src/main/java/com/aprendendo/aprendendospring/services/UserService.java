@@ -28,4 +28,8 @@ public class UserService {
 		
 	}
 
+	public User insert(User user){ //inserindo no banco de dados
+		return repository.save(user); //apenas retornando o metodo repository.save que ja mostra por padrao o usuario inserido
+	}
+
 }
