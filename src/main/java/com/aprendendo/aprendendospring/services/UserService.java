@@ -32,4 +32,8 @@ public class UserService {
 		return repository.save(user); //apenas retornando o metodo repository.save que ja mostra por padrao o usuario inserido
 	}
 
+	public void delete(long id){
+		repository.deleteById(id);
+	}
+
 }
