@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.aprendendo.aprendendospring.entities.User;
 import com.aprendendo.aprendendospring.repositories.UserRepository;
+import com.aprendendo.aprendendospring.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class UserService {
@@ -24,8 +25,8 @@ public class UserService {
 	
 	public User findById(long id){
 		Optional<User> u = repository.findById(id);		
-		return u.get();
-		
+		return u.orElseThrow(() -> new ResourceNotFoundException(id)); //para cada objeto vazio, lança essa exceção personalizada
+		//u.orElseThrow (Se não encontrar esse objeto, ira lançar a exceção)
 	}
 
 	public User insert(User user){ //inserindo no banco de dados
