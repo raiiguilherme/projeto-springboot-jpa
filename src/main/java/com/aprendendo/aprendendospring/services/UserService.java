@@ -3,12 +3,16 @@ package com.aprendendo.aprendendospring.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.aprendendo.aprendendospring.entities.User;
 import com.aprendendo.aprendendospring.repositories.UserRepository;
+import com.aprendendo.aprendendospring.resource.exceptions.DatabaseException;
 import com.aprendendo.aprendendospring.services.exceptions.ResourceNotFoundException;
 
 @Service
@@ -34,7 +38,23 @@ public class UserService {
 	}
 
 	public void delete(long id){
+
+		if(!repository.existsById(id)){//verificando se retorna que o objeto nao existe
+			//se não existir, lança essa exceção personalizada
+			throw new ResourceNotFoundException(id);
+		}
+
+		try{
 		repository.deleteById(id); //apenas chamando o metodo de deleção por id do repositorio
+		}
+
+		catch(DataIntegrityViolationException e){//acontece quando tentamos deletar um objeto que tem outros objetos associados a ele
+			throw new DatabaseException(e.getMessage());
+		}
+		
+			
+		
+		
 	}
 
 	public User update(long id, User user){
