@@ -15,6 +15,8 @@ import com.aprendendo.aprendendospring.repositories.UserRepository;
 import com.aprendendo.aprendendospring.resource.exceptions.DatabaseException;
 import com.aprendendo.aprendendospring.services.exceptions.ResourceNotFoundException;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class UserService {
 	
@@ -58,10 +60,16 @@ public class UserService {
 	}
 
 	public User update(long id, User user){
+		try{
 		User entity = repository.getReferenceById(id); //prepara um objeto monitorado pelo jpa para que seja feita as alterações antes de jogar no banco
 		updateData(entity, user); //metodo criado para atualizar os dados do entity no user
 		return repository.save(entity);
 
+		}
+		catch(EntityNotFoundException e){
+			throw new ResourceNotFoundException(id);
+		}
+		
 	}
 
 	private void updateData(User entity, User user) {
